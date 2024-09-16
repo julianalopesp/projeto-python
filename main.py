@@ -22,3 +22,30 @@ carros_db = [
     {"id": 9, "marca": "Mercedes-Benz", "modelo": "C-Class", "ano": 2019},
     {"id": 10, "marca": "Hyundai", "modelo": "Elantra", "ano": 2022},
 ]
+
+@app.get("/carros", response_model=List[Car])
+def listar_carros():
+    return carros_db
+
+
+@app.get("/carros/{car_id}", response_model=Car)
+def obter_carro(car_id: int):
+    for carro in carros_db:
+        if carro["id"] == car_id:
+            return carro
+    raise HTTPException(status_code=404, detail="Carro não encontrado")
+
+
+@app.post("/carros", response_model=Car)
+def adicionar_carro(carro: Car):
+    carros_db.append(carro.dict())
+    return carro
+
+@app.delete("/carros/{car_id}")
+def deletar_carro(car_id: int):
+    for carro in carros_db:
+        if carro["id"] == car_id:
+            carros_db.remove(carro)
+            return {"message": "Carro removido com sucesso"}
+    raise HTTPException(status_code=404, detail="Carro não encontrado")
+
