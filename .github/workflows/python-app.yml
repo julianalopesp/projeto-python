@@ -39,12 +39,12 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
     - name: Log in to Docker Hub
-      uses: docker/login-action@v2
+    - uses: docker/login-action@v2
       with:
-        username: julianalopesp
-        password: Estudo1602@
+          username: julianalopesp
+          password: minhasenha
+      
     - name: Build and push Docker image
       run: |
-        docker build -t myapp:latest .
-        docker tag myapp:latest ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
+          docker build -t julianalopesp/projeto-python:latest .
+          docker push julianalopesp/projeto-python:latest
