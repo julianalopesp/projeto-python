@@ -3,10 +3,6 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
-
-RUN pip install --no-cache-dir -r requirements.txt
-
 # Copiar o restante do código para o diretório de trabalho
 COPY . .
 
