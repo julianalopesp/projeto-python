@@ -1,13 +1,13 @@
-# Use uma imagem base do Python
 FROM python:3.10-slim
 
 WORKDIR /app
 
-# Copiar o restante do código para o diretório de trabalho
-COPY . .
+COPY requirements.txt .
 
-# Expôr a porta em que o aplicativo irá rodar (por exemplo, 8000 se for um servidor web)
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY main.py .
+
 EXPOSE 8000
 
-# Comando para iniciar o aplicativo
-CMD ["python", "app.py"]
+CMD ["python", "main.py"]
