@@ -40,4 +40,12 @@ def obter_carro(car_id: int):
 def adicionar_carro(carro: Car):
     carros_db.append(carro.dict())
     return carro
-    
+
+@app.delete("/carros/{car_id}")
+def deletar_carro(car_id: int):
+    for carro in carros_db:
+        if carro["id"] == car_id:
+            carros_db.remove(carro)
+            return {"message": "Carro removido com sucesso"}
+    raise HTTPException(status_code=404, detail="Carro não encontrado")
+
