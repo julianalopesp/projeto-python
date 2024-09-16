@@ -22,3 +22,7 @@ carros_db = [
     {"id": 9, "marca": "Mercedes-Benz", "modelo": "C-Class", "ano": 2019},
     {"id": 10, "marca": "Hyundai", "modelo": "Elantra", "ano": 2022},
 ]
+
+@app.get("/carros", response_model=List[Car])
+def listar_carros():
+    return carros_db
