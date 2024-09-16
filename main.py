@@ -35,3 +35,9 @@ def obter_carro(car_id: int):
             return carro
     raise HTTPException(status_code=404, detail="Carro não encontrado")
 
+
+@app.post("/carros", response_model=Car)
+def adicionar_carro(carro: Car):
+    carros_db.append(carro.dict())
+    return carro
+    
