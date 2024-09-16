@@ -26,3 +26,12 @@ carros_db = [
 @app.get("/carros", response_model=List[Car])
 def listar_carros():
     return carros_db
+
+
+@app.get("/carros/{car_id}", response_model=Car)
+def obter_carro(car_id: int):
+    for carro in carros_db:
+        if carro["id"] == car_id:
+            return carro
+    raise HTTPException(status_code=404, detail="Carro não encontrado")
+
