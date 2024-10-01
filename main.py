@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 
+print("Starting the application...")
+
 app = FastAPI()
 
 class Car(BaseModel):
@@ -49,3 +51,6 @@ def deletar_carro(car_id: int):
             return {"message": "Carro removido com sucesso"}
     raise HTTPException(status_code=404, detail="Carro não encontrado")
 
+
+
+print("Application finished.")
