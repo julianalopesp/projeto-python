@@ -32,9 +32,31 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-  deploy:
+  test:
     runs-on: ubuntu-latest
     needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run tests with pytest
+        run: |
+          pytest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -49,3 +71,13 @@ jobs:
         run: |
           docker build -t julianalopesp/projeto-python:latest .
           docker push julianalopesp/projeto-python:latest
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Send notification to Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d '{"content": "🚀 O deploy foi realizado com sucesso!"}' \
+            https://discord.com/api/webhooks/1290479735008133182/hzeiJ8HDkwMGZPp-deA4dV00QXblAjAQ-1eUd9VyV9nBrzk-HFlDgRNiSfHw3FrBA-Ee
